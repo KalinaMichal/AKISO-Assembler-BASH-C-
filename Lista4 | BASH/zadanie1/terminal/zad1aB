@@ -1,0 +1,39 @@
+#!/bin/bash
+print_with_unit(){
+	echo
+	if [[ $1 -lt 1000 ]]; then
+		echo "$1 B/s"
+	elif [[ $1 -lt 1000000 ]]; then
+		let output=$1/1000
+		echo "$output kB/s"
+	else
+		let output=$1/1000000
+		echo "$output MB/s"
+	fi
+}
+srxb=0
+rxb=0
+stxb=0
+txb=0
+c=1
+
+lrxb=$startrx
+ltxb=$starttx
+while true
+do
+#transfer danych
+	clear
+	let "rxb = $(awk 'NR>2{print $2}' /proc/net/dev | paste -sd+ | bc ) - lrxb"
+	lrxbs=$(awk 'NR>2{print $2}' /proc/net/dev | paste -sd+ | bc )
+	let "srxb = ($(awk 'NR>2{print $2}' /proc/net/dev | paste -sd+ | bc ) - startrx)/c"
+	echo Download: $(print_with_unit $rxb) Download srednie: $(print_with_unit $srxb)
+	let "txb = $(awk 'NR>2{print $10}' /proc/net/dev | paste -sd+ | bc ) - ltxb"
+	ltxb=$(awk 'NR>2{print $10}' /proc/net/dev | paste -sd+ | bc )
+	let "stxb = ($(awk 'NR>2{print $10}' /proc/net/dev | paste -sd+ | bc ) - starttx)/c"
+	echo Upload: $(print_with_unit $txb) Upload srednie: $(print_with_unit $stxb)
+	let c=$c+1
+
+
+
+	sleep 1
+done

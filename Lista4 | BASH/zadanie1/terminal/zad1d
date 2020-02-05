@@ -1,0 +1,13 @@
+#!/bin/sh
+ 
+pomiarA=`cat /proc/loadavg  | awk {'print $1'} | cut -d " " -f 2`
+pomiarB=`cat /proc/loadavg  | awk {'print $2'} | cut -d " " -f 2`
+pomiarC=`cat /proc/loadavg | awk {'print $3'} | cut -d " " -f 2`
+pomiarD=`cat /proc/loadavg | awk {'print $4'} | cut -d " " -f 2`
+pomiarE=`cat /proc/loadavg | awk {'print $5'} | cut -d " " -f 2`
+
+echo $pomiarA;
+echo $pomiarB;
+echo $pomiarC;
+echo $pomiarD;
+echo $pomiarE;

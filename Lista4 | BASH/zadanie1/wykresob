@@ -1,0 +1,50 @@
+#!/bin/bash
+
+#srxb=0
+#rxb=0
+#stxb=0
+#txb=0
+#c=1
+
+while true
+do
+
+
+
+
+#Średnie obciążenie systemu w ostatniej minucie
+echo $(awk '{print "obciazenie systemu:  " ($1)}' /proc/loadavg)
+
+obc=$(cat /proc/loadavg | head -c 4)
+  dlugosc=$(echo "$obc*100/5" | bc)
+  reszta=$(echo "($obc*100)%5" | bc | head -c 1)
+
+  tab_obc[2]=${tab_obc[1]}
+  tab_obc[1]=${tab_obc[0]}
+  tab_obc[0]=$dlugosc
+
+  dlugosc=${tab_obc[0]}
+  echo -e "\n"
+  echo -e "\t\t\tWYKRES OBCIAZENIA SYSTEMU\n"
+  for i in {1..80}; do
+    printf '\u2581'
+  done
+  echo -e "\n0.05                         1.5                           3.0"
+
+  for i in $(seq 1 1 $dlugosc); do
+    printf '\u2588'
+  done
+
+  printf '\n\n'
+
+  for i in {1..80}; do
+    printf '\u2594'
+  done
+  printf '\n\n'
+
+  sleep 1
+  clear
+done
+
+	sleep 1
+done

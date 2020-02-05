@@ -1,0 +1,24 @@
+#!/bin/sh
+ 
+
+for (( i=1; $i <= 10; )) ; do
+
+
+calyczas=`cat /proc/uptime | awk {'print $1'}`
+
+calyczas=${calyczas/\.*}
+godziny=$(($calyczas/3600))
+calyczas=$(($calyczas-$(($godziny*3600))))
+minuty=$(($calyczas/60))
+calyczas=$(($calyczas-$(($minuty*60))))
+sekundy=$calyczas
+
+echo "godzin: "$godziny
+echo "minut: "$minuty
+echo "sekund: "$sekundy
+
+
+
+sleep 1
+done
+

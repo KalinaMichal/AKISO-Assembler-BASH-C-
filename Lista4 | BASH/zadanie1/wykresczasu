@@ -1,0 +1,92 @@
+#!/bin/sh
+ clear
+tput rev
+
+    BG_BLUE="$(tput setab 4)"
+    FG_BLACK="$(tput setaf 0)"
+    FG_WHITE="$(tput setaf 7)"
+      terminal_rows="$(tput lines)"
+      terminal_cols="$(tput cols)"
+
+#czas dziaĹ�ania
+echo $(awk '{print int($1/86400)"dni, "int($1%86400/3600)"godzin, "int(($1%3600)/60)"minut, "int($1%60)"sekund"}' /proc/uptime)
+
+
+
+
+tput cup 2 0
+echo "56"
+echo "54"
+echo "50"
+echo "46"
+echo "44"
+echo "40"
+echo "36"
+echo "32"
+echo "28"
+echo "24"
+echo "20"
+echo "16"
+echo "12"
+echo "8"
+echo "4"
+for (( i=2; $i <=  $terminal_cols; i++ )) ; do
+for (( j=0; $j < 15; j++ )) ; do
+	echo -n ${FG_BLACK}
+	tput cup $((16-$j)) $i
+       echo " "
+	
+done
+done
+tput cup 0 0
+
+for (( i=3; $i <= 1000; i++ )) ; do
+
+#czas dziaĹ�ania
+tput cup 0 0
+echo $(awk '{print int($1/86400)"dni, "int($1%86400/3600)"godzin, "int(($1%3600)/60)"minut, "int($1%60)"sekund"}' /proc/uptime)
+
+
+calyczas=`cat /proc/uptime | awk {'print $1'}`
+
+calyczas=${calyczas/\.*}
+godziny=$(($calyczas/3600))
+calyczas=$(($calyczas-$(($godziny*3600))))
+minuty=$(($calyczas/60))
+calyczas=$(($calyczas-$(($minuty*60))))
+sekundy=$calyczas
+sekundy=$(($sekundy/4))
+
+
+
+if [ $i -eq $terminal_cols  ] ; then 
+i=3
+for (( k=2; $k <=  $terminal_cols; k++ )) ; do
+for (( j=0; $j < 15; j++ )) ; do
+	echo -n ${FG_BLACK}
+	tput cup $((16-$j)) $k
+       echo " "
+	
+done
+done
+fi
+
+
+for (( j=0; $j < 15; j++ )) ; do
+	echo -n ${FG_BLACK}
+	tput cup $((16-$j)) $i
+       echo " "
+	
+done
+echo -n ${FG_WHITE}
+for (( j=0; $j <= sekundy; j++ )) ; do
+	
+	tput cup $((16-$j)) $i
+       echo " "
+        
+done
+
+
+sleep 1
+done
+

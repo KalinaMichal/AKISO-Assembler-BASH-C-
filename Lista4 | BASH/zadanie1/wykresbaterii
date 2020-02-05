@@ -1,0 +1,34 @@
+#!/bin/sh
+ clear
+tput rev
+
+    FG_BLACK="$(tput setaf 0)"
+    FG_WHITE="$(tput setaf 7)"
+      terminal_rows="$(tput lines)"
+      terminal_cols="$(tput cols)"
+CAPECITY=`cat /sys/class/power_supply/BAT1/uevent | grep 'POWER_SUPPLY_CAPACITY=' | awk {'print $1'} | cut -d "=" -f 2`
+
+
+	tput cup 10 1
+	echo "stan baterii:" $CAPECITY"%" 
+
+for (( i=3; $i <= 1000; i++ )) ; do
+
+	tput cup 8 1
+      echo -n ${FG_BLACK}
+      echo "##################################################"
+      echo -n ${FG_WHITE}
+
+
+for (( j=0; $j < $(($CAPECITY/2)); j++ )) ; do
+	tput cup 8 $(($j+1))
+       echo "#"
+	
+done
+
+
+
+
+sleep 1
+done
+

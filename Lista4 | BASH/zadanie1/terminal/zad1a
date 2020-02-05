@@ -1,0 +1,75 @@
+#!/bin/sh
+ 
+for (( i=1; $i <= 1000;)) ; do
+
+
+
+odczyt=`cat /proc/net/dev  |  grep 'wlp8s0:' | awk {'print $2'}`
+zapis=`cat /proc/net/dev  |  grep 'wlp8s0:' | awk {'print $10'}`
+j=1;
+
+
+
+
+if [[ $odczyt > 1000000 ]] ; then
+	odczytTMP=$(($odczyt/1000000))
+	odczytTMP=${odczytTMP/\*.}
+	echo "odczyt: "  $odczytTMP MB
+else
+	if  [[ $odczyt > 1000.0 ]] ; then
+	odczytTMP=$(($odczyt/1000))
+	odczytTMP=${odczytTMP/\*.}
+	echo "odczyt: "  $odczytTMP KB
+	else	
+		echo "odczyt: " $odczyt B
+	fi
+fi
+
+if [[ $zapis > 1000000 ]] ; then
+	zapisTMP=$(($zapis/1000000))
+	zapisTMP=${zapisTMP/\*.}
+	echo "zapis: "  $zapisTMP MB
+else
+	if  [ $zapis > 1000.0 ] ; then
+	zapisTMP=$(($zapis/1000))
+	zapisTMP=${zapisTMP/\*.}
+	echo "zapis: "  $zapisTMP KB
+	else	
+		echo "zapis: " $zapis B
+	fi
+fi
+
+srednia_zapisu=$(($(($srednia_zapisu+$zapis))/2))
+srednia_odczytu=$(($(($srednia_odczytu+$odczyt))/2))
+
+
+if [[ $srednia_odczytu > 1000000 ]] ; then
+	echo "odczyt-srednia: " $(echo "$srednia_odczytu"/"1000000" | bc -l ) MB
+else
+	if  [[ $srednia_odczytu > 1000.0 ]] ; then
+	echo "odczyt-srednia: " $(echo "$srednia_odczytu"/"1000" | bc -l ) KB
+	else	
+		echo "odczyt-srednia:" $srednia_odczytu B
+	fi
+fi
+
+if [[ $srednia_zapisu > 1000000 ]] ; then
+	echo "zapis-srednia: "  $(echo "$srednia_zapisu"/"1000000" | bc -l ) MB
+else
+	if  [ $srednia_zapisu > 1000.0 ] ; then
+		echo "zapis-srednia: " $(echo "$srednia_zapisu"/"1000" | bc -l ) KB
+	else	
+		echo "zapis-srednia: " $srednia_zapisu B
+	fi
+fi
+
+
+
+
+
+
+
+sleep 1
+clear
+done
+

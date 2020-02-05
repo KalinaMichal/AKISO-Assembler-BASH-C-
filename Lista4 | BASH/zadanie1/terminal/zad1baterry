@@ -1,0 +1,7 @@
+#!/bin/sh
+ 
+
+CAPECITY=`cat /sys/class/power_supply/BAT1/uevent | grep 'POWER_SUPPLY_CAPACITY=' | awk {'print $1'} | cut -d "=" -f 2`
+
+
+echo "poziom baterii: " $CAPECITY "%"
