@@ -1,0 +1,370 @@
+    #!/bin/bash
+
+# Calculate the size of the terminal
+
+      terminal_cols="$(tput cols)"
+      terminal_rows="$(tput lines)"
+FG_RED="$(tput setaf 1)"
+FG_WHITE="$(tput setaf 7)"
+FG_BLACK="$(tput setaf 0)"
+FG_BLUE="$(tput setaf 2)"
+FG_YELLOW="$(tput setaf 3)"
+warunek=1
+TIMEOUT=.001	
+	game_rows_frame=$((terminal_rows-2))
+	game_cols_frame=$((terminal_cols-2))
+
+clear
+i=1
+tput rev
+
+poprzedni_ruch_pilki=1
+#1-PrawoGora	2-PrawoDol	3-LewoGora	4-LewoDol
+#-----------------------------------------------------------------
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++BUDOWA PLANSZY
+stworz_lewy_bok(){
+
+#lewy bok
+for (( i=0; $i < $game_rows_frame; i++ )) ; do
+	echo -n ${FG_RED}
+	tput cup $((i)) 0
+       echo " "
+	
+done
+}
+stworz_prawy_bok(){
+#prawy bok
+for (( i=0; $i < $game_rows_frame; i++ )) ; do
+	echo -n ${FG_RED}
+	tput cup $((i)) $game_cols_frame
+       echo " "
+	
+
+done
+}
+stworz_plansze(){
+#gora
+for (( i=0; $i <= $game_cols_frame; i++ )) ; do
+	echo -n ${FG_RED}
+	tput cup 0 $((i)) 
+       echo " "
+	
+done
+#dol
+for (( i=0; $i <= $game_cols_frame; i++ )) ; do
+	echo -n ${FG_RED}
+	tput cup $(($game_rows_frame)) $((i)) 
+       echo " "
+
+done
+
+#Wypelnianie pola
+for (( i=1; $i < $game_cols_frame; i++ )) ; do
+for (( j=1; $j < $game_rows_frame; j++ )) ; do
+	echo -n ${FG_BLACK}
+	tput cup $j $i
+       echo " "
+
+done
+done
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++BUDOWA PADA1
+#Postawienie pada
+postawienie_pada1(){
+	echo -n ${FG_BLUE}
+	tput cup  2 1
+       echo " "
+tput cup  3 1
+       echo " "
+	pad_cols=1
+	pad_rows=3
+
+
+	tput cup  4 1
+       echo " "
+}
+
+
+
+
+#Pad w gore
+pad1_w_gore(){
+
+if (($(($pad_rows-1)) > 1 )) ; then
+
+
+echo -n ${FG_BLACK}
+	tput cup $(($pad_rows+1)) $pad_cols
+      echo " "
+
+echo -n ${FG_BLUE}
+	pad_rows=$(($pad_rows - 1))
+tput cup  $pad_rows 1
+       echo " "
+tput cup  $(($pad_rows-1)) 1
+       echo " "
+fi
+}
+
+#Pad w dol
+pad1_w_dol(){
+if (($(($pad_rows+2)) <  $game_rows_frame)) ; then
+echo -n ${FG_BLACK}
+	tput cup $(($pad_rows-1)) $pad_cols
+      echo " "
+
+echo -n ${FG_BLUE}
+	pad_rows=$(($pad_rows + 1))
+tput cup  $pad_rows 1
+       echo " "
+tput cup  $(($pad_rows+1)) 1
+       echo " "
+fi
+}
+odmaluj_pad1(){
+
+echo -n ${FG_BLUE}
+tput cup  $pad_rows 1
+       echo " "
+tput cup  $(($pad_rows-1)) 1
+       echo " "
+tput cup  $(($pad_rows+1)) 1
+       echo " "
+}
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++BUDOWA PADA2
+#Postawienie pada2
+postawienie_pada2(){
+	echo -n ${FG_YELLOW}
+	tput cup  2 $(($game_cols_frame-1))
+       echo " "
+tput cup  3 $(($game_cols_frame-1))
+       echo " "
+	pad2_cols=$(($game_cols_frame-1))
+	pad2_rows=3
+
+
+	tput cup  4 $(($game_cols_frame-1))
+       echo " "
+}
+
+
+
+
+#Pad w gore
+pad2_w_gore(){
+if (($(($pad2_rows-1)) > 1 )) ; then
+
+echo -n ${FG_BLACK}
+	tput cup $(($pad2_rows+1)) $pad2_cols
+      echo " "
+
+echo -n ${FG_YELLOW}
+	pad2_rows=$(($pad2_rows - 1))
+tput cup  $pad2_rows $pad2_cols
+       echo " "
+tput cup  $(($pad2_rows-1)) $pad2_cols
+       echo " "
+fi
+}
+
+#Pad w dol
+pad2_w_dol(){
+if (($(($pad2_rows+2)) <  $game_rows_frame)) ; then
+echo -n ${FG_BLACK}
+	tput cup $(($pad2_rows-1)) $pad2_cols
+      echo " "
+
+echo -n ${FG_YELLOW}
+	pad2_rows=$(($pad2_rows + 1))
+tput cup  $pad2_rows $pad2_cols
+       echo " "
+tput cup  $(($pad2_rows+1)) $pad2_cols
+       echo " "
+fi
+}
+odmaluj_pad2(){
+
+echo -n ${FG_YELLOW}
+tput cup  $pad2_rows  $pad2_cols
+       echo " "
+tput cup  $(($pad2_rows-1))  $pad2_cols
+       echo " "
+tput cup  $(($pad2_rows+1))  $pad2_cols
+       echo " "
+}
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++BUDOWA PIŁKI
+#Postawienie pilki
+postawienie_pilki(){
+pos_row=5
+pos_col=5
+tput cup  $pos_row $pos_col
+    echo -e "●"
+sleep 0.5
+}
+
+#Przestawienie pilki prawodol
+pilka_prawo_dol() {
+echo -n ${FG_BLACK}
+tput cup  $pos_row $pos_col
+       echo " "
+
+pos_row=$((pos_row+1))
+pos_col=$((pos_col+1))
+tput cup  $pos_row $pos_col
+    echo -e "●"
+popredni_ruch_pilki=2
+}
+#Przestawienie pilki lewodol
+pilka_lewo_dol() {
+echo -n ${FG_BLACK}
+tput cup  $pos_row $pos_col
+       echo " "
+
+pos_row=$((pos_row+1))
+pos_col=$((pos_col-1))
+tput cup  $pos_row $pos_col
+    echo -e "●"
+popredni_ruch_pilki=4
+}
+#Przestawienie pilki lewogora
+pilka_lewo_gora() {
+echo -n ${FG_BLACK}
+tput cup  $pos_row $pos_col
+       echo " "
+
+pos_row=$((pos_row-1))
+pos_col=$((pos_col-1))
+tput cup  $pos_row $pos_col
+    echo -e "●"
+popredni_ruch_pilki=3
+}
+#Przestawienie pilki prawogora
+pilka_prawo_gora() {
+echo -n ${FG_BLACK}
+tput cup  $pos_row $pos_col
+       echo " "
+
+pos_row=$((pos_row-1))
+pos_col=$((pos_col+1))
+tput cup  $pos_row $pos_col
+    echo -e "●"
+popredni_ruch_pilki=1
+}
+
+#Rusz pilke
+rusz_pilke() {
+
+	if(($poprzedni_ruch_pilki == 2)) ; then
+	if (($(($pos_row+1)) == $game_rows_frame)) ; then
+		poprzedni_ruch_pilki=1
+
+	else 	pilka_prawo_dol
+	
+	fi
+	fi
+	
+	if(($poprzedni_ruch_pilki == 1)) ; then
+	if (($(($pos_row-1)) == 0)) ; then
+		poprzedni_ruch_pilki=2
+	else 	pilka_prawo_gora
+	
+	fi
+	fi
+
+	if(($poprzedni_ruch_pilki == 3)) ; then
+	if (($(($pos_row-1)) == 0)) ; then
+		poprzedni_ruch_pilki=4
+	else 	pilka_lewo_gora
+	
+	fi
+	fi
+
+	if(($poprzedni_ruch_pilki == 4)) ; then
+	if (($(($pos_row+1)) == $game_rows_frame)) ; then
+		poprzedni_ruch_pilki=3
+	else 	pilka_lewo_dol
+	
+	fi
+	fi
+
+}
+
+
+#-------------------------------------------------------------------------------------------------KONTAKT Z PADEM
+sprawdz_kontakt(){
+	
+	if ((  $pos_row==$pad2_rows && $pos_col==$pad2_cols )) ; then
+		poprzedni_ruch_pilki=3
+	fi
+
+	if ((  $pos_row== $(($pad2_rows+1)) && $pos_col==$pad2_cols )) ; then
+		poprzedni_ruch_pilki=4
+	fi
+
+	if ((  $pos_row== $(($pad2_rows-1)) && $pos_col==$pad2_cols )) ; then
+		poprzedni_ruch_pilki=3
+	fi
+
+	if ((  $pos_row==$pad_rows && $pos_col==$pad_cols )) ; then
+		poprzedni_ruch_pilki=1
+	fi
+
+	if ((  $pos_row== $(($pad_rows+1)) && $pos_col==$pad_cols )) ; then
+		poprzedni_ruch_pilki=2
+	fi
+
+	if ((  $pos_row== $(($pad_rows-1)) && $pos_col==$pad_cols )) ; then
+		poprzedni_ruch_pilki=1
+	fi
+
+
+}
+#------------------------------------------------------------------------------------------------WYGRANA
+sprawdz_czy_wygral(){
+	if ((  $pos_col==$game_cols_frame )) ; then
+		clear
+		echo -n ${FG_BLUE}
+		echo "WYGRAL ZIELONY"
+		warunek=0
+	fi
+
+	if ((  $pos_col==0 )) ; then
+		clear
+		echo -n ${FG_YELLOW}
+		echo "WYGRAL ŻÓŁTY"
+		warunek=0
+	fi
+
+}
+
+#-------------------------------------------------------------------------------------------------
+stworz_plansze
+postawienie_pada1
+postawienie_pilki
+postawienie_pada2
+
+
+while (( $warunek == 1 )) ; do
+
+
+	read -n 1 -t ${TIMEOUT} direction
+	case "${direction}" in
+		q) pad1_w_gore ;;
+		a) pad1_w_dol ;;
+		p) pad2_w_gore ;;
+		l) pad2_w_dol ;;
+	esac
+		rusz_pilke
+		sprawdz_kontakt
+
+
+odmaluj_pad2
+odmaluj_pad1
+stworz_lewy_bok
+stworz_prawy_bok
+		sprawdz_czy_wygral
+sleep 0.09
+done
+
