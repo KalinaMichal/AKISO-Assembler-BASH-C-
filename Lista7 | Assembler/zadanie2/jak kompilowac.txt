@@ -1,0 +1,4 @@
+nasm -f elf32 ex2.asm
+ld -m elf_i386 -s -o zad2 ex2.o
+./zad2
+

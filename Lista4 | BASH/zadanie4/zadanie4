@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#for i in "$@";
+#do
+ #   echo "$i";
+#done
+
+
+lynx -dump $1 > strona.txt
+
+
+while true ; do
+	lynx -dump $1 > strona2.txt
+
+	if(!(diff strona.txt strona2.txt)) then
+		echo "zmienili strone!"
+	clear
+		xmessage 'Zmienili strone!!!'
+		lynx -dump $1 > strona.txt
+	fi
+	sleep $2
+
+done

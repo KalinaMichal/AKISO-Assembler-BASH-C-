@@ -1,0 +1,92 @@
+/		Michal Kalina		\
+/		indes: 250088		\
+/		data: 2019-10-15	\
+/		AKiSO - 2019		\
+
+
+Input
+Store D
+Store D2
+
+	Load D
+	Add one
+    Add one
+    Store D
+
+//Petla na dole sluzy do sprawdzenia kazdego przypadku, tzn. biore 
+//kazda liczbe z zakresu 1-X i przepuszczam przez reszte kodu
+LoopMain,   Load D		//D=D-1
+			Subt one
+            Store D
+            
+            Load D		//X=D
+            Store X
+            
+            Load X	//Val2=X-1
+            Subt one
+            Store Val2
+            
+            Load Val1	//Val1=2
+            Subt Val1
+            Add one
+            Add one
+            Store Val1
+            
+            
+            
+           	Load D2		//D2--;
+			Subt one
+            Store D2
+            
+            Skipcond 000		/dodatkowe sprawdzenie dla pewnosci
+            jump testZero
+            Halt
+
+
+//Tutaj nizej badam czy liczba X jest pierwsza
+
+Loop, Load X
+		Subt Val1
+		Skipcond 400
+		jump podmien
+		jump pierwsza
+
+podmien, Load Val2
+		Store X
+if, Load X
+		Skipcond 400
+		jump else
+		jump pierwsza      
+else, Skipcond 800
+		Jump Endif
+Then, Load X
+		Subt Val1
+		Store X
+		Jump if
+Endif, Load Val1
+		Add one
+		Store Val1
+		jump podmien
+
+testZero, Skipcond 400		/sprawdzamy czy liczba jest = 0
+		jump Loop
+		Halt				
+pierwsza, Load Val2
+		Subt Val1
+		Skipcond 400
+		Jump LoopMain //nie jest pierwsza
+		Load Val2
+		Output
+		Jump LoopMain
+
+//zmienne
+
+licznik, DEC 0
+D2, DEC 0		
+D, DEC 0
+X, DEC 0
+one, DEC 1
+zero, DEC 0
+	
+Val1, DEC 2
+Val2, DEC 0

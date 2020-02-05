@@ -1,0 +1,21 @@
+#!/bin/bash
+
+
+picture=$(curl https://api.thecatapi.com/v1/images/search | jq -r '.[].url')
+wget -P ./obraz $picture
+for file in ./obraz/*; do
+
+	if [[ -f $file ]]; then 
+		mv "$file" "pic"
+	fi
+done
+
+curl http://api.icndb.com/jokes/random > strona.txt
+clear
+
+catimg "pic"
+printf "ID: "
+cat strona.txt | cut -d '"' -f 9
+printf "JOKE: "
+cat strona.txt | cut -d '"' -f 12
+

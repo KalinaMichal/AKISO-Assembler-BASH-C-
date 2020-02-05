@@ -1,0 +1,55 @@
+/		Michal Kalina		\
+/		indes: 250088		\
+/		data: 2019-10-11	\
+/		AKiSO - 2019		\
+
+
+/ Prompt user to type in integers
+INPUT
+Store X
+INPUT
+Store Y
+
+/ Loop for performing iterative addition
+loop,    Load num
+         Add X
+         Store num
+			
+         Load result
+         Add one
+         Store result
+            
+            
+            
+         Load X
+         Subt Y
+         Store X
+
+         Skipcond 000 / have we completed the multiplication?
+         Jump loop / no; repeat loop
+         / yes, so exit the loop
+         
+         Load result
+         Add Rone
+         Store result
+         
+         Load X
+         Add Y
+         Store X
+         
+
+/ Output result to user then halt program
+Load result
+Output
+
+Load X
+Output
+Halt
+
+X, DEC 0
+Y, DEC 0
+num, DEC 0
+result, DEC 0
+one, DEC 1
+Rone, DEC -1
+

@@ -1,0 +1,13 @@
+#!/bin/sh
+ 
+for file in $(ls /proc/  | grep [0-9])
+do
+
+sudo ls /proc/$file/fd | wc -l
+cat /proc/$file/status | grep 'Pid:' 
+cat /proc/$file/status | grep 'State:'
+echo "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+
+
+done

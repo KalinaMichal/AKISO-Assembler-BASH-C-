@@ -1,0 +1,28 @@
+#!/bin/sh
+
+#curl -H "Content-Type: application/json" --data @body.json http://api.icndb.com/jokes/random/
+
+
+#curl -H "Accept: application/json" -H "Content-type: application/json" http://api.icndb.com/jokes/random.json
+
+curl http://api.icndb.com/jokes/random > strona.txt
+clear
+printf "ID"
+cat strona.txt | cut -d '"' -f 9
+echo " "
+echo "JOKE: "
+cat strona.txt | cut -d '"' -f 12
+echo " "
+
+
+
+
+
+
+#curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+#curl http://api.icndb.com/jokes/random/
+#jq ‘,’ strona.txt
+#$ JsonData='[{"Book":"PHP 7"}, {"Publication":"Apress"},
+#{"Book":"React 16 Essentials"},{"Publication":"Packt"} ]'
+#echo $strona
+#curl http://api.icndb.com/jokes/random/
